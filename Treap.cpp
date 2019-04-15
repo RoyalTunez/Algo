@@ -77,6 +77,7 @@ treap* merge(treap *a, treap *b) {
 		return b;
 	}
 }
+
 bool check(treap* root, int key) {
 	if (root == nullptr)
 		return false;
@@ -88,6 +89,7 @@ bool check(treap* root, int key) {
 	}
 	return root->x == key;
 }
+
 treap* del(treap* root, int key) {
 	if (root == nullptr) return nullptr;
 
