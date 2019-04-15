@@ -1,8 +1,5 @@
 #include <iostream>
-#include <iomanip>
-#include <set>
 using namespace std;
-
 
 struct treap {
 	int x, y;
