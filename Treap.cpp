@@ -181,6 +181,6 @@ int main(int argc, char** argv) {
 				cout << res->x << endl;
 			continue;
 		}
-  }
+  	}
 	return 0;
 }
