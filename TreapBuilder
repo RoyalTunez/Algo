@@ -1,0 +1,107 @@
+#include <iostream>
+#include <iomanip>
+#include <set>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+
+struct treap {
+	int x, y, index = 0;
+
+	treap *left, *right, *father;
+	
+	treap(){
+		left = nullptr;
+		right = nullptr;
+		father = nullptr;
+	}
+	treap(int key) {
+		x = key;
+		y = rand() % 1000000000;
+		left = nullptr;
+		right = nullptr;
+		father = nullptr;
+	}
+	
+	void build(pair<int, int> key) {
+		x = key.first;
+		y = key.second;
+		left = nullptr;
+		right = nullptr;
+		father = nullptr;
+	}
+	
+	void build(pair<int, int> key, treap *f) {
+		x = key.first;
+		y = key.second;
+		father = f;
+		left = nullptr;
+		right = nullptr;
+	}
+	
+
+	void setLeft(treap *in) {
+		left = in;
+	}
+
+	void setRight(treap *in) {
+		right = in;
+	}
+
+} *root;
+
+
+treap* build(vector<pair<pair<int, int>, int>> in) {
+	treap *last = new treap();
+	last->build(in[0].first);
+	last->index = in[0].second;
+
+	for (int i = 1; i < in.size(); i++) {
+		if (last->y > in[i].first.second) {
+			last->setRight(new treap());
+			last->right->build(in[i].first, last);
+			last->right->index = in[i].second;
+			last = last->right;
+		} else {
+			treap *tmp = last;
+			while (tmp->father != nullptr && tmp->y <= in[i].first.second)
+				tmp = tmp->father;
+			if (tmp->y <= in[i].first.second) {
+				last = new treap();
+				last->build(in[i].first);
+				last->index = in[i].second;
+				last->setLeft(tmp);
+			} else {
+				last = new treap();
+				last->build(in[i].first, tmp);
+				last->index = in[i].second;
+				last->left = tmp->right;
+				tmp->setRight(last);
+			}
+		}
+	}
+	while (last->father != nullptr)
+			last = last->father;
+	return last;
+}
+
+int n;
+int x;
+vector<pair<pair<int, int>, int>> in;
+string s;
+
+int main(int argc, char** argv) {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> n;
+	in.resize(n);
+	for (int i = 0; i < n; i++) {
+		cin >> in[i].first.first >> in[i].first.second;
+		in[i].first.second *= -1;
+		in[i].second = i + 1;
+	}
+	sort(in.begin(), in.end());
+	root = build(in);
+	return 0;
+}
