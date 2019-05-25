@@ -97,14 +97,14 @@ void solve(int v, int l, int r) {
 }
 
 int main() {
-	ios_base::sync_with_stdio(false);
+    ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int n, m;
     cin >> n >> m;
     for (int i = 1; i <= n; i++) {
     	parent[i] = i;
     	rang[i] = 1;
-	}
+    }
     length = get_tree_size(m + 1);
     for (int i = 1; i <= m; i++) {
     	pair<int, int> edge;
@@ -115,23 +115,23 @@ int main() {
     	if (s == "link") {
     		time[edge] = i;
     		continue;
-		}
-		if (s == "cut") {
-			int start = time[edge];
-			time.erase(edge);
-			int end = i;
-			add(1, 1, length + 1, start, end, edge);
-			continue;
-		}
-		if (s == "connected") {
-			check[i] = true;
-			question[i] = edge;
-			continue;
-		}
 	}
-	for (pair<pair<int, int>, int> i: time) {
-		add(1, 1, length + 1, i.second, m, i.first);
+	if (s == "cut") {
+		int start = time[edge];
+		time.erase(edge);
+		int end = i;
+		add(1, 1, length + 1, start, end, edge);
+		continue;
 	}
-	solve(1, 1, length + 1);
+	if (s == "connected") {
+		check[i] = true;
+		question[i] = edge;
+		continue;
+	}
+    }
+    for (pair<pair<int, int>, int> i: time) {
+    	add(1, 1, length + 1, i.second, m, i.first);
+    }
+    solve(1, 1, length + 1);
     return 0;
 }
